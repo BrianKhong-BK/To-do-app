@@ -35,27 +35,41 @@ async function filterList(userId) {
   taskTable.innerHTML = taskList
     .filter((task) => task.userId === userId)
     .map(
-      (task) => `
-  <tr>
-    <td>${task.userId}: ${task.title}</td>
-  </tr>
-  `
-    )
-    .join('');
+      (task) => {
+        if(task.completed === true){
+          return `
+            <tr>
+              <td>${task.userId}: ${task.title} ✅</td>
+            </tr>
+            `
+        } else {
+          return `
+              <tr>
+                <td>${task.userId}: ${task.title} ❌</td>
+              </tr>
+              `
+        }}).join('')
 }
 
 async function loadPage() {
   const taskList = await fetchData();
   const taskTable = document.getElementById('taskList');
   taskTable.innerHTML = taskList
-    .map(
-      (task) => `
-  <tr>
-    <td>${task.userId}: ${task.title}</td>
-  </tr>
-  `
-    )
-    .join('');
+  .map(
+    (task) => {
+      if(task.completed === true){
+        return `
+          <tr>
+            <td>${task.userId}: ${task.title} ✅</td>
+          </tr>
+          `
+      } else {
+        return `
+            <tr>
+              <td>${task.userId}: ${task.title} ❌</td>
+            </tr>
+            `
+      }}).join('')
 }
 
 loadPage();
