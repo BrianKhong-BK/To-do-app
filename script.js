@@ -4,8 +4,6 @@ async function fetchData() {
 }
 
 async function showList() {
-  toggleList();
-  toggleButton();
   const userList = await fetchData();
   const dropDown = document.getElementById('dropDownList');
   const userId = userList.map((user) => user.userId);
@@ -13,23 +11,13 @@ async function showList() {
     .filter((user, index) => userId.indexOf(user) === index)
     .map(
       (user) => `
-<a id="list" onclick="filterList(${user})">User ID: ${user}</a>
+<li><a class="dropdown-item" href="#" onclick="filterList(${user})">User ID: ${user}</a></li>
 `
     )
     .join('');
 }
 
-function toggleList() {
-  document.getElementById('dropDownList').classList.toggle('show');
-}
-
-function toggleButton() {
-  document.getElementById('button').classList.toggle('press');
-}
-
 async function filterList(userId) {
-  toggleList();
-  toggleButton();
   const taskList = await fetchData();
   const taskTable = document.getElementById('taskList');
   taskTable.innerHTML = taskList
@@ -39,13 +27,15 @@ async function filterList(userId) {
         if(task.completed === true){
           return `
             <tr>
-              <td>${task.userId}: ${task.title} ✅</td>
+              <td>${task.userId}: ${task.title}</td>
+              <td>✅ Completed</td>
             </tr>
             `
         } else {
           return `
               <tr>
-                <td>${task.userId}: ${task.title} ❌</td>
+                <td>${task.userId}: ${task.title}</td>
+                <td>❌ Not Completed</td>
               </tr>
               `
         }}).join('')
@@ -60,13 +50,15 @@ async function loadPage() {
       if(task.completed === true){
         return `
           <tr>
-            <td>${task.userId}: ${task.title} ✅</td>
+            <td>${task.userId}: ${task.title}</td>
+            <td>✅ Completed</td>
           </tr>
           `
       } else {
         return `
             <tr>
-              <td>${task.userId}: ${task.title} ❌</td>
+              <td>${task.userId}: ${task.title}</td>
+              <td>❌ Not Completed</td>
             </tr>
             `
       }}).join('')
