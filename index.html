@@ -25,12 +25,22 @@
       </ul>
     </div>
 
-
+    <h2 id="user"></h2>
     <table class="table table-striped table-bordered" my>
       <thead> 
         <tr>
-          <th scope="col" style="width: 70%">Tasks</th>
-          <th scope="col" style="width: 30%">Status</th>
+          <th scope="col" style="width: 70%" class="align-middle">Tasks</th>
+          <th scope="col" style="width: 30%">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showList()">
+                Status
+              </button>
+              <ul class="dropdown-menu" id="dropDownList">
+                <li><a class="dropdown-item" href="#" onclick="filterTask('c')">✅ Completed</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterTask('nc')">❌ Not Completed</a></li>
+              </ul>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody id="taskList" >
