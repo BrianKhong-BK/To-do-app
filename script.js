@@ -14,7 +14,7 @@ async function showList() {
     .filter((user, index) => userId.indexOf(user) === index)
     .map(
       (user) => `
-      <li><a class="dropdown-item" href="#" onclick="filterList(${user})">User ID: ${user}</a></li>
+      <li><a class="dropdown-item" href="#" onclick="filterUserPage(${user})">User ID: ${user}</a></li>
       `)
     .join('') + 
     `
@@ -22,11 +22,10 @@ async function showList() {
     `;
 }
 
-async function filterList(userId) {
+async function filterUserPage(userId) {
   const taskList = await fetchData();
-  user.innerHTML = `User: ${userId}`
-  taskTable.innerHTML = await generateList(taskList
-    .filter((task) => task.userId === userId))
+  user.innerHTML = userId
+  taskTable.innerHTML = await generateList(filterUser(taskList, userId))
 }
 
 async function loadPage() {
@@ -35,7 +34,30 @@ async function loadPage() {
   taskTable.innerHTML = await generateList(taskList);
 }
 
-async function generateList(task){
+async function filterStatusPage(status){
+  const taskList = await fetchData();
+  const currentUser = user.innerHTML
+  taskTable.innerHTML = (currentUser === "All User") ? await generateList(filterStatus(taskList, status)) : await generateList(filterUser(filterStatus(taskList, status), parseInt(currentUser)))
+}
+
+async function filterStatusPageAll(){
+  const currentUser = user.innerHTML
+  if (currentUser === "All User") {
+    loadPage()
+  } else {
+    filterUserPage(parseInt(currentUser))
+  }
+}
+
+function filterUser(task, userId){
+  return task.filter((task) => task.userId === userId);
+}
+
+function filterStatus(task, status){
+  return task.filter((task) => task.completed === status);
+}
+
+function generateList(task){
   return task.map(
     (task) => {
       if(task.completed === true){
